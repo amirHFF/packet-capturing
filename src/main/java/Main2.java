@@ -12,6 +12,7 @@ import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
 import org.pcap4j.core.PcapStat;
+import org.pcap4j.packet.ArpPacket;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.util.NifSelector;
 
