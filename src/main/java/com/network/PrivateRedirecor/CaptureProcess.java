@@ -12,7 +12,7 @@ import javax.swing.*;
 import java.util.*;
 
 public class CaptureProcess {
-	private long totalPacketCount = 0;
+	private long totalPacketCount = 1;
 	private long counter =1;
 	private static int READ_TIMEOUT = 50; // [ms]
 	private static int SNAPLEN = 65536; // [bytes]
@@ -22,15 +22,16 @@ public class CaptureProcess {
 	private PacketSummaryResult packetSummaryResult = new PacketSummaryResult();
 	private HashSet<PacketSummaryModel> packetStore = new HashSet<>();
 	private TableInitializer table;
-
+	private JLabel totalTrafficLabel;
 	private JTextArea outputConsole;
 
 	public CaptureProcess() {
 	}
 
-	public CaptureProcess(JTextArea console , TableInitializer table) {
+	public CaptureProcess(JTextArea console , TableInitializer table , JLabel totalTrafficLabel) {
 		outputConsole = console;
 		this.table=table;
+		this.totalTrafficLabel=totalTrafficLabel;
 	}
 
 	public List<PcapNetworkInterface> getInterfaceList() {
@@ -61,7 +62,6 @@ public class CaptureProcess {
 						public void gotPacket(Packet packet) {
 							System.out.println(packet);
 
-							totalPacketCount++;
 							packetSummaryResult.addTrafficUsage(packet.length());
 							packetSummaryResult.putOccurrence(packet.get(IpV4Packet.class).getHeader().getDstAddr().toString(), packet.get(IpV4Packet.class).getHeader().getSrcAddr().toString(), packet.length());
 //							packetSummary.putOccurrence(packet.get(IpV4Packet.class).getHeader().getDstAddr().getCanonicalHostName());
@@ -69,6 +69,9 @@ public class CaptureProcess {
 							PacketSummaryModel packetSummaryModel=readPacket(packet);
 							packetStore.add(packetSummaryModel);
 							addRow(packetSummaryModel.getAsArray());
+							totalTrafficLabel.setText(String.valueOf(packetSummaryResult.getTrafficUsage()));
+							totalPacketCount++;
+
 //							outputConsole.append("\n-----------------------------------------\n");
 						}
 					};
