@@ -17,6 +17,7 @@ public class PacketSummaryModel {
 	private String iPv4HeaderTTL;
 	private String iPv4HeaderProtocol;
 	private long totalLength;
+	private String completeData;
 
 	public PacketSummaryModel() {
 	}
@@ -34,6 +35,14 @@ public class PacketSummaryModel {
 		this.iPv4HeaderTTL = iPv4HeaderTTL;
 		this.iPv4HeaderProtocol = iPv4HeaderProtocol;
 		this.totalLength = totalLength;
+	}
+
+	public String getCompleteData() {
+		return completeData;
+	}
+
+	public void setCompleteData(String completeData) {
+		this.completeData = completeData;
 	}
 
 	public long getCounter() {

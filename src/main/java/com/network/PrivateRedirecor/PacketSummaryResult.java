@@ -22,11 +22,13 @@ public class PacketSummaryResult {
 
 	public void putOccurrence(String source, String dest, long length) {
 		packetInfo occurrence = packetOccurrence.get(new PacketSummaryModel(source, dest));
-		if (occurrence == null)
-			packetOccurrence.put(new PacketSummaryModel(source, dest), new packetInfo(1,length));
+		if (occurrence == null) {
+			packetOccurrence.put(new PacketSummaryModel(source, dest), new packetInfo(1, length));
+		}
 		else {
-			occurrence.count++; occurrence.length+=length;
-			packetOccurrence.replace(new PacketSummaryModel(source, dest), occurrence);
+			occurrence.count++;
+			occurrence.length+=length;
+			packetOccurrence.put(new PacketSummaryModel(source, dest), occurrence);
 		}
 	}
 
