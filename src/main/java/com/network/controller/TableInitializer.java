@@ -28,14 +28,16 @@ public class TableInitializer {
 		this.tableModel = tableModel;
 	}
 	private void setTableColumn(){
-	tableModel.addColumn("number");
-	tableModel.addColumn("Ethernet Destination");
-	tableModel.addColumn("Ethernet Source");
-	tableModel.addColumn("Ethernet Type");
+	tableModel.addColumn("num");
 	tableModel.addColumn("IPv4 Source");
 	tableModel.addColumn("IPv4 Destination");
-	tableModel.addColumn("Packet Version");
+	tableModel.addColumn("Source port");
+	tableModel.addColumn("Destination port");
+	tableModel.addColumn("Ethernet Source");
+	tableModel.addColumn("Ethernet Destination");
 	tableModel.addColumn("Protocol");
+	tableModel.addColumn("Ethernet Type");
+	tableModel.addColumn("Packet Version");
 	tableModel.addColumn("Packet TTL");
 	tableModel.addColumn("Total length");
 	}
