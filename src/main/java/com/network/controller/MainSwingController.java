@@ -14,6 +14,8 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 public class MainSwingController extends JFrame {
@@ -40,7 +42,16 @@ public class MainSwingController extends JFrame {
 	}
 
 	public static void throwWarning(String text) {
-		JOptionPane.showMessageDialog(new JFrame("error"), text, "warning", JOptionPane.WARNING_MESSAGE);
+		JOptionPane jOptionPane =new JOptionPane( text, JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION);
+		JDialog dialog=jOptionPane.createDialog(" warning");
+		dialog.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					dialog.dispose();
+			}
+		}});
+
 	}
 
 	public static JFrame getJFrame() {

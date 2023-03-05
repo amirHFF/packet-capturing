@@ -4,10 +4,7 @@ import com.network.controller.MainPanel;
 import com.network.controller.MainSwingController;
 import com.network.controller.TableInitializer;
 import com.network.dto.*;
-import com.network.dto.chart.ChartObjectMap;
-import com.network.dto.chart.ChartObjectValue;
-import com.network.dto.chart.IpRouteChartObjectKey;
-import com.network.dto.chart.PortChartObjectKey;
+import com.network.dto.chart.*;
 import com.network.model.PacketSummaryModel;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.*;
@@ -30,6 +27,7 @@ public class CaptureProcess {
 	private HashMap<Long, PacketDto> packetStore = new HashMap<>();
 	public static ChartObjectMap<IpRouteChartObjectKey, ChartObjectValue> ipRouteChartMap = new ChartObjectMap();
 	public static ChartObjectMap<PortChartObjectKey, ChartObjectValue> portChartMap = new ChartObjectMap();
+	public static ChartObjectMap<ProtocolChartObjectKey, ChartObjectValue> protocolChartMap = new ChartObjectMap();
 	private TableInitializer table;
 	private JTextArea outputConsole;
 
@@ -79,6 +77,7 @@ public class CaptureProcess {
 							}
 							if (packet.get(TcpPacket.class) != null) {
 								packetDto.setTcpPacketDto(TcpPacketDto.build(packet.get(TcpPacket.class)));
+								packetDto.setPacketPayloadDto(new PacketPayloadDto(packet.get(TcpPacket.class).getPayload().toString()));
 							}
 							if (packet.get(UdpPacket.class) != null) {
 								packetDto.setUdpPacketDto(UdpPacketDto.build(packet.get(UdpPacket.class)));
@@ -145,6 +144,8 @@ public class CaptureProcess {
 			if (packetDto.getValue().getIPv4PacketDto() != null) {
 				ipRouteChartMap.put(new IpRouteChartObjectKey(packetDto.getValue().getIPv4PacketDto().getSrcAddr(), packetDto.getValue().getIPv4PacketDto().getDstAddr()),
 						new ChartObjectValue(packetDto.getValue().getLength()));
+
+				protocolChartMap.put(new ProtocolChartObjectKey(packetDto.getValue().getIPv4PacketDto().getProtocol()),new ChartObjectValue(packetDto.getValue().getLength()));
 
 				if (packetDto.getValue().getTcpPacketDto() != null) {
 					if (packetDto.getValue().getIPv4PacketDto().getSrcAddr().equals(adapterIpV4Address)) {

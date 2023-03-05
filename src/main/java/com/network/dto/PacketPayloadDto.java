@@ -1,20 +1,14 @@
 package com.network.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
+@Getter
+@Setter
 public class PacketPayloadDto {
 
 	public String payload;
 
-	public String getPayload() {
-		return payload;
-	}
-
-	public void setPayload(String payload) {
-		this.payload = payload;
-	}
-
-	@Override
-	public String toString() {
-		return
-				"\n\tpayload='" + payload ;
-	}
 }

@@ -13,6 +13,7 @@ public class PortChartObjectKey implements ChartableKey {
 		return port;
 	}
 
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

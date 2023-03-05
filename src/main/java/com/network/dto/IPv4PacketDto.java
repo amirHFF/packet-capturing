@@ -40,7 +40,7 @@ public class IPv4PacketDto {
 		iPv4PacketDto.setIhl(packet.getHeader().getIhlAsInt());
 		iPv4PacketDto.setMoreFragmentFlag(packet.getHeader().getMoreFragmentFlag());
 		iPv4PacketDto.setPadding(packet.getHeader().getPadding());
-		iPv4PacketDto.setProtocol(packet.getHeader().getProtocol().valueAsString());
+		iPv4PacketDto.setProtocol(packet.getHeader().getProtocol().name());
 		iPv4PacketDto.setReservedFlag(packet.getHeader().getReservedFlag());
 		iPv4PacketDto.setTos(String.valueOf(packet.getHeader().getTos()));
 		iPv4PacketDto.setTotalLength(packet.getHeader().getTotalLength());

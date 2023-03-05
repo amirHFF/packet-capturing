@@ -93,6 +93,9 @@ public class GraphPanel extends JPanel {
 		if (chartableFilterCombobox.getItemAt(chartableFilterCombobox.getSelectedIndex()).equals(ChartType.IP_ROUTE.getName())){
 			return CaptureProcess.ipRouteChartMap;
 		}
+		if (chartableFilterCombobox.getItemAt(chartableFilterCombobox.getSelectedIndex()).equals(ChartType.protocol.getName())){
+			return CaptureProcess.protocolChartMap;
+		}
 		else if (chartableFilterCombobox.getItemAt(chartableFilterCombobox.getSelectedIndex()).equals(ChartType.port.getName())){
 			return CaptureProcess.portChartMap;
 		}
