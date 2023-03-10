@@ -1,6 +1,6 @@
 package com.network.controller;
 
-import com.network.PrivateRedirecor.CaptureProcess;
+import com.network.capture.CaptureProcess;
 import com.network.dto.PacketPayloadDto;
 import org.pcap4j.core.PcapNetworkInterface;
 
@@ -13,8 +13,6 @@ import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 public class MainPanel extends JPanel {

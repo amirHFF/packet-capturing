@@ -1,6 +1,6 @@
 package com.network.controller;
 
-import com.network.PrivateRedirecor.CaptureProcess;
+import com.network.capture.CaptureProcess;
 import com.network.dto.chart.ChartObjectMap;
 import com.network.dto.chart.ChartableKey;
 import com.network.dto.chart.ChartableValue;
@@ -37,8 +37,8 @@ public class GraphPanel extends JPanel {
 		chartSize = new JComboBox<>(new Short[]{ 5, 10, 15 });
 		chartSize.setSelectedIndex(0);
 
-		trafficChartComponent = ChartFactory.createPieChart("traffic usage of " + chartableFilterCombobox.getItemAt(chartableFilterCombobox.getSelectedIndex()), trafficPieDataset, true, true, false);
-		countChartComponent = ChartFactory.createPieChart("count of " + chartableFilterCombobox.getItemAt(chartableFilterCombobox.getSelectedIndex()), countPieDataset, true, true, false);
+		trafficChartComponent = ChartFactory.createPieChart("traffic usage " + chartableFilterCombobox.getItemAt(chartableFilterCombobox.getSelectedIndex()), trafficPieDataset, true, true, false);
+		countChartComponent = ChartFactory.createPieChart("packet count " + chartableFilterCombobox.getItemAt(chartableFilterCombobox.getSelectedIndex()), countPieDataset, true, true, false);
 		trafficChartPanel = new ChartPanel(trafficChartComponent);
 		countChartPanel = new ChartPanel(countChartComponent);
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();

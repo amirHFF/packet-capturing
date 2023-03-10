@@ -1,4 +1,4 @@
-package com.network.dto;
+package com.network.dto.packetType;
 
 import lombok.Getter;
 import lombok.Setter;

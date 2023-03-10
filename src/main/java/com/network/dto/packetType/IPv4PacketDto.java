@@ -1,16 +1,18 @@
-package com.network.dto;
+package com.network.dto.packetType;
 
 
 import lombok.Getter;
 import lombok.Setter;
 import org.pcap4j.packet.IpV4Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.net.Inet4Address;
 import java.util.Arrays;
 
 @Getter
 @Setter
 public class IPv4PacketDto {
+	static Logger logger= LoggerFactory.getLogger(IPv4PacketDto.class);
 	private String srcAddr;
 	private String dstAddr;
 	private String version;
@@ -47,6 +49,7 @@ public class IPv4PacketDto {
 		iPv4PacketDto.setTtl(packet.getHeader().getTtl());
 		iPv4PacketDto.setVersion(packet.getHeader().getVersion().name());
 
+		logger.info("ipv4Packet created successfully");
 		return iPv4PacketDto;
 	}
 	@Override

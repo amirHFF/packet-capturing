@@ -1,10 +1,11 @@
-package com.network.PrivateRedirecor;
+package com.network.capture;
 
 import com.network.controller.MainPanel;
 import com.network.controller.MainSwingController;
 import com.network.controller.TableInitializer;
 import com.network.dto.*;
 import com.network.dto.chart.*;
+import com.network.dto.packetType.*;
 import com.network.model.PacketSummaryModel;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.*;
@@ -66,26 +67,18 @@ public class CaptureProcess {
 					new PacketListener() {
 						@Override
 						public void gotPacket(Packet packet) {
-							PacketDto packetDto = new PacketDto(counter++, packet.length());
-							packetSummaryResult.addTrafficUsage(packet.length());
+							try {
+								PacketDto packetDto = new PacketFactory(new PacketDto(counter++, packet.length())).createPacketDto(packet);
 
-							if (packet.get(IpV4Packet.class) != null) {
-								packetDto.setIPv4PacketDto(IPv4PacketDto.build(packet.get(IpV4Packet.class)));
+								packetSummaryResult.addTrafficUsage(packet.length());
+
+								addRow(PacketSummaryModel.buildArray(packetDto));
+								packetStore.put(counter, packetDto);
+								table.getTable().scrollRectToVisible(new Rectangle(0, table.getTable().getPreferredSize().height, 1, 1));
+								MainPanel.totalTrafficUsedLabel.setText(packetSummaryResult.getTrafficUsage().toString());
+							}catch (Exception ex){
+								System.out.println(ex.getMessage());
 							}
-							if (packet.get(EthernetPacket.class) != null) {
-								packetDto.setEthernetPacketDto(EthernetPacketDto.build(packet.get(EthernetPacket.class)));
-							}
-							if (packet.get(TcpPacket.class) != null) {
-								packetDto.setTcpPacketDto(TcpPacketDto.build(packet.get(TcpPacket.class)));
-								packetDto.setPacketPayloadDto(new PacketPayloadDto(packet.get(TcpPacket.class).getPayload().toString()));
-							}
-							if (packet.get(UdpPacket.class) != null) {
-								packetDto.setUdpPacketDto(UdpPacketDto.build(packet.get(UdpPacket.class)));
-							}
-							addRow(PacketSummaryModel.buildArray(packetDto));
-							packetStore.put(counter, packetDto);
-							table.getTable().scrollRectToVisible(new Rectangle(0, table.getTable().getPreferredSize().height, 1, 1));
-							MainPanel.totalTrafficUsedLabel.setText(packetSummaryResult.getTrafficUsage().toString());
 						}
 					};
 			handler.loop(-1, listener);
@@ -145,7 +138,7 @@ public class CaptureProcess {
 				ipRouteChartMap.put(new IpRouteChartObjectKey(packetDto.getValue().getIPv4PacketDto().getSrcAddr(), packetDto.getValue().getIPv4PacketDto().getDstAddr()),
 						new ChartObjectValue(packetDto.getValue().getLength()));
 
-				protocolChartMap.put(new ProtocolChartObjectKey(packetDto.getValue().getIPv4PacketDto().getProtocol()),new ChartObjectValue(packetDto.getValue().getLength()));
+				protocolChartMap.put(new ProtocolChartObjectKey(packetDto.getValue().getIPv4PacketDto().getProtocol()), new ChartObjectValue(packetDto.getValue().getLength()));
 
 				if (packetDto.getValue().getTcpPacketDto() != null) {
 					if (packetDto.getValue().getIPv4PacketDto().getSrcAddr().equals(adapterIpV4Address)) {
@@ -157,8 +150,7 @@ public class CaptureProcess {
 								, new ChartObjectValue(packetDto.getValue().getLength()));
 					}
 				}
-			}
-			else if (packetDto.getValue().getEthernetPacketDto() !=null){
+			} else if (packetDto.getValue().getEthernetPacketDto() != null) {
 				ipRouteChartMap.put(new IpRouteChartObjectKey(packetDto.getValue().getEthernetPacketDto().getEthernetHeaderSource()
 								, packetDto.getValue().getEthernetPacketDto().getEthernetHeaderDestination()),
 						new ChartObjectValue(packetDto.getValue().getLength()));

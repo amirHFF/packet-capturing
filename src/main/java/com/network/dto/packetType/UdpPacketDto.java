@@ -1,9 +1,9 @@
-package com.network.dto;
+package com.network.dto.packetType;
 
+import com.network.dto.PortDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.pcap4j.packet.UdpPacket;
-import org.pcap4j.packet.namednumber.UdpPort;
 
 @Getter
 @Setter
