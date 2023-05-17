@@ -10,6 +10,7 @@ import org.pcap4j.packet.LlcPacket;
 public class PacketDto {
 	private long PacketCount;
 	private long length;
+	private String protocol;
 	private EthernetPacketDto ethernetPacketDto;
 	private IPv4PacketDto iPv4PacketDto;
 	private PacketPayloadDto packetPayloadDto;

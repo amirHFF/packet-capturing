@@ -18,7 +18,7 @@ import java.util.List;
 
 public class CaptureProcess {
 	//    private long totalPacketCount = 0;
-	private long counter = 0;
+	private long counter = 1;
 	private static int READ_TIMEOUT = 50; // [ms]
 	private static int SNAPLEN = 65536; // [bytes]
 	private List<PcapNetworkInterface> networkInterfaceList;
@@ -68,11 +68,12 @@ public class CaptureProcess {
 						@Override
 						public void gotPacket(Packet packet) {
 							try {
-								PacketDto packetDto = new PacketFactory(new PacketDto(counter++, packet.length())).createPacketDto(packet);
+								PacketFactory packetFactory = new PacketFactory(new PacketDto(counter++, packet.length()));
+								PacketDto packetDto=packetFactory.createPacketDto(packet);
 
 								packetSummaryResult.addTrafficUsage(packet.length());
 
-								addRow(PacketSummaryModel.buildArray(packetDto));
+								addRow(packetFactory.getPacketSummaryModel().buildArray());
 								packetStore.put(counter, packetDto);
 								table.getTable().scrollRectToVisible(new Rectangle(0, table.getTable().getPreferredSize().height, 1, 1));
 								MainPanel.totalTrafficUsedLabel.setText(packetSummaryResult.getTrafficUsage().toString());
@@ -103,15 +104,22 @@ public class CaptureProcess {
 		outputConsole.append(String.valueOf(counter));
 		outputConsole.append("  ----------------------------------\n");
 
-		outputConsole.append("Source Address\t\tDestination Address\t\tPacket Count\t\tRoute Type Total size\n");
+		outputConsole.append("Source - destination Address\t\tPacket Count\t\tRoute Type Total size\n");
 
-		for (Map.Entry<PacketSummaryResult.PacketSummaryModel, PacketSummaryResult.packetInfo> occurrence : packetSummaryResult.getPacketOccurrence().entrySet()) {
-			outputConsole.append(occurrence.getKey().toString() + "\t\t");
-			outputConsole.append(occurrence.getValue().getCount() + "\t\t");
-			outputConsole.append(occurrence.getValue().getLength() + "byte");
+		for (Map.Entry<ChartableKey, ChartableValue> routeChart : ipRouteChartMap.entrySet()) {
+			outputConsole.append(routeChart.getKey().getName() + "\t\t");
+			outputConsole.append(routeChart.getValue().getCount() + "\t\t");
+			outputConsole.append(routeChart.getValue().getTrafficUsage() + "byte");
 			outputConsole.append("\n");
 
 		}
+//		for (Map.Entry<PacketSummaryResult.PacketSummaryModel, PacketSummaryResult.packetInfo> occurrence : packetSummaryResult.getPacketOccurrence().entrySet()) {
+//			outputConsole.append(occurrence.getKey().toString() + "\t\t");
+//			outputConsole.append(occurrence.getValue().getCount() + "\t\t");
+//			outputConsole.append(occurrence.getValue().getLength() + "byte");
+//			outputConsole.append("\n");
+//
+//		}
 	}
 
 	private void addRow(String[] data) {

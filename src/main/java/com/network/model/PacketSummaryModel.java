@@ -12,33 +12,34 @@ import org.pcap4j.packet.TcpPacket;
 public class PacketSummaryModel {
 
 	private long counter;
-	private String ethernetHeaderDestination;
-	private String ethernetHeaderSource;
-	private String ethernetHeaderType;
-	private String iPv4HeaderSource;
-	private String iPv4HeaderDestination;
-	private String sourcePort;
-	private String destinationPort;
-	private String version;
-	private String ttl;
-	private String protocol;
-	private long totalLength;
-	private String completeData;
+	private String ethernetHeaderDestination = "";
+	private String ethernetHeaderSource= "" ;
+	private String ethernetHeaderType= "" ;
+	private String iPv4HeaderSource= "" ;
+	private String iPv4HeaderDestination= "" ;
+	private String sourcePort= "" ;
+	private String destinationPort= "" ;
+	private String version= "" ;
+	private String ttl= "" ;
+	private String protocol= "" ;
+	private long totalLength ;
+	private String completeData= "" ;
 
-	public static String[] buildArray(PacketDto packetDto) {
+	public String[] buildArray() {
 		return new String[]{
-				String.valueOf(packetDto.getPacketCount()),
-				packetDto.getIPv4PacketDto() == null ? null : packetDto.getIPv4PacketDto().getSrcAddr(),
-				packetDto.getIPv4PacketDto() == null ? null : packetDto.getIPv4PacketDto().getDstAddr(),
-				getPort(packetDto, true),
-				getPort(packetDto, false),
-				packetDto.getEthernetPacketDto().getEthernetHeaderSource(),
-				packetDto.getEthernetPacketDto().getEthernetHeaderDestination(),
-				getProtocol(packetDto),
-				packetDto.getEthernetPacketDto().getEthernetHeaderType(),
-				getVersion(packetDto),
-				getTtl(packetDto),
-				String.valueOf(packetDto.getLength()),
+				String.valueOf(counter),iPv4HeaderSource,iPv4HeaderDestination,sourcePort,destinationPort,ethernetHeaderSource,ethernetHeaderDestination,protocol,ethernetHeaderType,
+				ttl,String.valueOf(totalLength)
+//				packetDto.getIPv4PacketDto() == null ? null : packetDto.getIPv4PacketDto().getSrcAddr(),
+//				packetDto.getIPv4PacketDto() == null ? null : packetDto.getIPv4PacketDto().getDstAddr(),
+//				getPort(packetDto, true),
+//				getPort(packetDto, false),
+//				packetDto.getEthernetPacketDto().getEthernetHeaderSource(),
+//				packetDto.getEthernetPacketDto().getEthernetHeaderDestination(),
+//				getProtocol(packetDto),
+//				packetDto.getEthernetPacketDto().getEthernetHeaderType(),
+//				getVersion(packetDto),
+//				getTtl(packetDto),
+//				String.valueOf(packetDto.getLength()),
 		};
 	}
 

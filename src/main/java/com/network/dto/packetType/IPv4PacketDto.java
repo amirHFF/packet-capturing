@@ -47,7 +47,7 @@ public class IPv4PacketDto {
 		iPv4PacketDto.setTos(String.valueOf(packet.getHeader().getTos()));
 		iPv4PacketDto.setTotalLength(packet.getHeader().getTotalLength());
 		iPv4PacketDto.setTtl(packet.getHeader().getTtl());
-		iPv4PacketDto.setVersion(packet.getHeader().getVersion().name());
+		iPv4PacketDto.setVersion(packet.getHeader().getVersion().valueAsString());
 
 		logger.info("ipv4Packet created successfully");
 		return iPv4PacketDto;
