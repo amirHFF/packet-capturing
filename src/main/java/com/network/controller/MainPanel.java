@@ -1,7 +1,10 @@
 package com.network.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.network.capture.CaptureProcess;
 import com.network.dto.PacketPayloadDto;
+import com.network.restClient.restClient;
 import org.pcap4j.core.PcapNetworkInterface;
 
 import javax.imageio.ImageIO;
@@ -14,6 +17,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Map;
 
 public class MainPanel extends JPanel {
 
@@ -155,10 +159,20 @@ public class MainPanel extends JPanel {
                 if (payloadDto != null) {
                     if (captureProcess.getPacketStore().get((long) table.getSelectedRow()).getPacketPayloadDto() != null)
                         new PacketDialog(MainSwingController.getJFrame(), payloadDto.getPayload());
-                }
-                else
+                } else
                     MainSwingController.throwWarning("null payload");
 
+            }
+        });
+
+        DNSInquiryMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int selectedRow = table.getSelectedRow();
+                int selectedColumn = table.getSelectedColumn();
+                Map<String, Object> resultDnsMap = restClient.pathVariableGet("http://ipwho.is", table.getModel().getValueAt(selectedRow , selectedColumn).toString());
+
+                new PacketDialog(MainSwingController.getJFrame(), getDnsInquiryText(resultDnsMap));
             }
         });
 
@@ -183,4 +197,14 @@ public class MainPanel extends JPanel {
         JOptionPane.showMessageDialog(new JFrame("error"), "dialog", text, JOptionPane.WARNING_MESSAGE);
     }
 
+    private String getDnsInquiryText(Map<String , Object> objectMap){
+        StringBuilder str = new StringBuilder();
+        for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
+            str.append(entry.getKey());
+            str.append(" : ");
+            str.append(entry.getValue());
+            str.append("\n");
+        }
+        return str.toString();
+    }
 }
